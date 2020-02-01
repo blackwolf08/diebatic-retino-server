@@ -10,15 +10,16 @@ from PIL import ImageTk, Image
 import fpdf
 from datetime import date
 import tensorflow as tf
+import os
 
 def fetch_results(image_str,patient_name):
   with tf.name_scope("predict"):
     loaded_graph = tf.Graph()
     with tf.Session(graph=loaded_graph) as sess:
-      model = tensorflow.keras.models.load_model("./minor-server/content/keras_model.h5")
-      with open("./minor-server/content/{}.png".format(patient_name) , "wb") as image_file_recv:
+      model = tensorflow.keras.models.load_model("/home/sunnydhama/flask_app/minor-server/content/keras_model.h5")
+      with open("/home/sunnydhama/flask_app/minor-server/content/{}.png".format(patient_name) , "wb") as image_file_recv:
         image_file_recv.write(base64.b64decode(image_str.encode('utf-8')))
-      testing_image = image.load_img("./minor-server/content/{}.png".format(patient_name),target_size = (224, 224))
+      testing_image = image.load_img("/home/sunnydhama/flask_app/minor-server/content/{}.png".format(patient_name),target_size = (224, 224))
       testing_image = image.img_to_array(testing_image)
       testing_image = np.expand_dims(testing_image, axis = 0)
 
@@ -62,7 +63,7 @@ def test():
 def getReport():
   try:
     if request.method == 'GET':
-      return send_file("./content/{}.pdf".format(request.args.get('patient_name')), attachment_filename = "{}_DR_Report.pdf".format(request.args.get('patient_name')))
+      return send_file("/home/sunnydhama/flask_app/minor-server/content/{}.pdf".format(request.args.get('patient_name')), attachment_filename = "{}_DR_Report.pdf".format(request.args.get('patient_name')))
   except:
     return "ERROR", 500
 
