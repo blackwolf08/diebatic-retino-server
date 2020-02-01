@@ -11,8 +11,6 @@ import fpdf
 from datetime import date
 import tensorflow as tf
 
-
-
 def fetch_results(image_str,patient_name):
   with tf.name_scope("predict"):
     loaded_graph = tf.Graph()
